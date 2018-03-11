@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="library_management.book" id="Book0">
+          <field name="name">The Catcher in the Rye</field>
+          <field name="date">1951-01-01</field>
+          <field name="isbn">7543321726</field>
+        </record>
+    </data>
+</odoo>

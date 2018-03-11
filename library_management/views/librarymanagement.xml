@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+  <data>
+
+    <!--Tree Views-->
+
+    <record model="ir.ui.view" id="view_rental_logs_tree">
+      <field name="name">Rental Logs Tree View</field>
+      <field name="model">library_management.log</field>
+      <field name="priority">16</field>
+      <field name="arch" type="xml">
+        <tree string="Rental Log" create="false" edit="false" delete="false">
+          <field name="cust_id"/>
+          <field name="checked_out"/>
+          <field name="checked_in"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="action_view_rental_logs">
+      <field name="name">Rental Logs</field>
+      <field name="res_model">library_management.log</field>
+      <field name="context">{}</field>
+      <field name="domain">[('book_id', '=', context.get('filter_id'))]</field>
+    </record>
+
+    <record model="ir.ui.view" id="view_book_tree">
+      <field name="name">Book Tree View</field>
+      <field name="model">library_management.book</field>
+      <field name="priority">16</field>
+      <field name="arch" type="xml">
+        <tree string="Booktreeview" default_order="name desc" decoration-warning="status=='rented'">
+          <field name="name"/>
+          <field name="authors"/>
+          <field name="date"/>
+          <field name="status"/>
+
+        </tree>
+      </field>
+
+    </record>
+
+    <record model="ir.ui.view" id="view_customer_tree">
+      <field name="name">Customer Tree View</field>
+      <field name="model">library_management.customer</field>
+      <field name="priority">16</field>
+      <field name="arch" type="xml">
+        <tree string="customertreeview" default_order="name desc">
+          <field name="name"/>
+          <field name="address1"/>
+          <field name="city"/>
+          <field name="state"/>
+
+        </tree>
+      </field>
+
+    </record>
+
+    <record model="ir.ui.view" id="view_authors_tree">
+      <field name="name">Authors Tree View</field>
+      <field name="model">library_management.authors</field>
+      <field name="priority">16</field>
+      <field name="arch" type="xml">
+        <tree string="authorstreeview" default_order="name desc">
+          <field name="name"/>
+          <field name="hometown"/>
+          <field name="birth_date"/>
+
+        </tree>
+      </field>
+
+    </record>
+
+    <!--Form Views-->
+
+    <record model="ir.ui.view" id="view_book_form">
+      <field name="name">Book Form View</field>
+      <field name="model">library_management.book</field>
+      <field name="priority">16</field>
+      <field name="arch" type="xml">
+        <form string="Bookformview">
+          <header>
+            <field name="status" widget="statusbar" clickable="True"/>
+          </header>
+          <sheet>
+            <div class="oe_button_box" name="button_box">
+              <button name="%(library_management.action_view_rental_logs)d" type="action" class="oe_stat_button" icon="fa-pencil-square-o" context="{'filter_id': active_id}">
+                <field name="log_count" widget="statinfo" string="Logs"/>
+              </button>
+            </div>
+          <field name="image" class="oe_avatar" widget="image"/>
+          <div class="oe_title">
+            <label for="name" class="oe_edit_only"/>
+            <h1>
+              <field name="name" placeholder="Book Name"/>
+            </h1>
+          </div>
+          <group>
+            <field name="editors"/>
+            <field name="date"/>
+            <field name="isbn"/>
+            <field name="authors" widget="many2many_tags" options="{'color_field' : 'color'}"/>
+            <field name="user_id" options="{'no_create' : True}"/>
+            <field name="tag_id" widget="many2many_tags" options="{'color_field' : 'color'}"/>
+
+          </group>
+          <notebook>
+            <page string="Book Loan History">
+              <field name="log_id">
+                <tree string="Logs" default_order="checked_out desc">
+                  <field name="cust_id"/>
+                  <field name="checked_out"/>
+                  <field name="checked_in"/>
+                </tree>
+                <form string="Loaned History">
+                  <sheet>
+                    <div class="oe_title">
+                      <!--<label for="name" class="oe_edit_only"/>-->
+                      <h1>
+                        <field name="cust_id" placeholder="Select a Customer"/>
+                      </h1>
+                    </div>
+                    <group>
+                      <field name="checked_out"/>
+                      <field name="checked_in"/>
+                    </group>s
+                  </sheet>
+                </form>
+              </field>
+            </page>
+          </notebook>
+
+        </sheet>
+
+      </form>
+    </field>
+
+  </record>
+
+  <record model="ir.ui.view" id="view_customer_form">
+    <field name="name">Customer Form View</field>
+    <field name="model">library_management.customer</field>
+    <field name="priority">16</field>
+    <field name="arch" type="xml">
+      <form string="customerformview">
+        <header></header>
+        <sheet>
+          <div class="oe_title">
+            <label for="name" class="oe_edit_only"/>
+            <h1>
+              <field name="name" placeholder="Customer Name"/>
+            </h1>
+          </div>
+          <group>
+            <field name="address1"/>
+            <field name="address2"/>
+            <field name="city"/>
+            <field name="state"/>
+            <field name="zipcode"/>
+            <field name="code"/>
+
+          </group>
+
+        </sheet>
+
+      </form>
+    </field>
+
+  </record>
+
+  <record model="ir.ui.view" id="view_authors_form">
+    <field name="name">Authors Form View</field>
+    <field name="model">library_management.authors</field>
+    <field name="priority">16</field>
+    <field name="arch" type="xml">
+      <form string="authorsformview">
+        <header></header>
+        <sheet>
+          <div class="oe_title">
+            <label for="name" class="oe_edit_only"/>
+            <h1>
+              <field name="name" placeholder="Author Name"/>
+            </h1>
+          </div>
+          <group>
+            <field name="hometown"/>
+            <field name="birth_date"/>
+
+          </group>
+
+        </sheet>
+
+      </form>
+    </field>
+
+  </record>
+
+  <!--Menu Views-->
+
+  <record model="ir.actions.act_window" id="action_book_view">
+    <field name="name">Books</field>
+    <field name="res_model">library_management.book</field>
+    <field name="limit">80</field>
+    <field name="context">{}</field>
+    <field name="domain">{}</field>
+
+  </record>
+
+  <record model="ir.actions.act_window" id="action_customer_view">
+    <field name="name">Customers</field>
+    <field name="res_model">library_management.customer</field>
+    <field name="limit">80</field>
+    <field name="context">{}</field>
+    <field name="domain">{}</field>
+
+  </record>
+
+  <!-- <record model="ir.actions.act_window" id="action_author_view"> <field name="name">Authors</field> <field name="res_model">library_management.authors</field> <field name="limit">80</field> <field name="context">{}</field> <field
+  name="domain">{}</field> </record> -->
+
+  <menuitem id="root_librarymanagement" name="Library Management"/>
+  <menuitem id="main_librarymanagement" parent="root_librarymanagement" name="Library Management"/>
+  <menuitem id="menu_action_view_books" parent="main_librarymanagement" name="Books" action="action_book_view"/>
+  <menuitem id="menu_action_view_customers" parent="main_librarymanagement" name="Customers" action="action_customer_view"/>
+  <!-- <menuitem id="menu_action_view_authors" parent="main_librarymanagement" name="Authors" action="action_author_view"/> -->
+
+</data>
+
+</odoo>
