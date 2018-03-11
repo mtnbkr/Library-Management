@@ -11,8 +11,7 @@ class BookTags(models.Model):
 
     name = fields.Char(string="Tag Name")
     color = fields.Integer(string="Color Index")
-    #fun things
-
+    #fun things I changed
 
 class Authors(models.Model):
     _name = "library_management.authors"
